@@ -3,22 +3,25 @@ package lrumultilevelcache;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Memory {
+public class Memory implements MemoryInterface{
 	
-
+	
 	Map<String, Cache> memorySystem = new HashMap<>();
 	int maxCacheLevel=0;
 	
+	@Override
 	public void addCacheLevel( int capacity) {
 		String cacheLevel = "l"+(++maxCacheLevel);
 		memorySystem.put(cacheLevel,  new Cache(capacity));
 	}
 	
+	@Override
 	public void removeCacheLevel() {
 		String levelToDel= "l"+(maxCacheLevel--);
 		memorySystem.remove(levelToDel);
 	}
 	
+	@Override
 	public Object get(String key) {
 		
 		Cache cache = memorySystem.get("l1");
@@ -35,6 +38,7 @@ public class Memory {
 		return data;
 	}
 	
+	@Override
 	public void put(String key, Object value) {
 		
 		Cache cache = memorySystem.get("l1");
@@ -54,7 +58,8 @@ public class Memory {
 		}
 	}
 	
-	public void printAllFreeCapacity() {
+	@Override
+	public void totalFreeSpaces() {
 		for(int index= 1;index<=maxCacheLevel;index++) {
 			System.out.println("Free capacity for l"+index+" : "+memorySystem.get("l"+index).freeCapacity()); 
 		}
